@@ -9,7 +9,7 @@ export const typeDefs = /* GraphQL */ `
   type Day { external_id: String!, date: String!, tz: String!, measured_time: String, std_date: String, std_time: String, weight_kg: Float, body_fat_pct: Float, bmi: Float, condition_note: String, emoji: String }
   input DayInput { external_id: String!, date: String!, tz: String, measured_time: String, std_date: String, std_time: String, weight_kg: Float, body_fat_pct: Float, bmi: Float, condition_note: String, emoji: String }
   type DaySection { date: String!, tz: String, day: Day, meals: [Meal!]! }
-  type CalendarDay { date: String!, days: [Day!]!, total_kcal: Float!, total_pm: Float!, meal_count: Int!, representative_menu: String, emoji: String }
+  type CalendarDay { date: String!, days: [Day!]!, total_kcal: Float!, total_pm: Float!, meal_count: Int!, representative_menu: String, emoji: String, planned_kcal: Float!, planned_count: Int!, planned_emoji: String }
   type WeightPoint { date: String!, tz: String!, std_date: String, std_time: String, weight_kg: Float, body_fat_pct: Float, bmi: Float }
   type Tenant { id: String!, name: String, current_tz: String, week_start: Int, target_kcal: Int }
   type Query {
@@ -36,11 +36,13 @@ export const resolvers = {
       const meals = db.prepare(`SELECT * FROM meals WHERE substr(date,1,7)=?`).all(month).map(rowToMeal);
       const days = db.prepare(`SELECT * FROM days WHERE substr(date,1,7)=?`).all(month).map(rowToDay);
       const byDate = new Map();
-      const ensure = (date) => { if (!byDate.has(date)) byDate.set(date, { date, days: [], total_kcal: 0, total_pm: 0, meal_count: 0 }); return byDate.get(date); };
+      const ensure = (date) => { if (!byDate.has(date)) byDate.set(date, { date, days: [], total_kcal: 0, total_pm: 0, meal_count: 0, planned_kcal: 0, planned_count: 0, planned_emoji: null }); return byDate.get(date); };
       for (const d of days) { const c = ensure(d.date); c.days.push(d); if (d.emoji) c.emoji = d.emoji; }
-      for (const m of meals) { const c = ensure(m.date); c.meal_count++; if (m.status === 'actual') { c.total_kcal += m.kcal; c.total_pm += m.kcal_pm; } }
+      for (const m of meals) { const c = ensure(m.date); c.meal_count++; if (m.status === 'actual') { c.total_kcal += m.kcal; c.total_pm += m.kcal_pm; } if (m.status === 'planned') { c.planned_kcal += m.kcal; c.planned_count++; } }
       for (const c of byDate.values()) {
         const ms = meals.filter(m => m.date === c.date);
+        const plannedMs = ms.filter(m => m.status === 'planned');
+        if (plannedMs.length) c.planned_emoji = plannedMs.reduce((a,b)=> (b.kcal > a.kcal ? b : a)).emoji || null;
         const actuals = ms.filter(m => m.status === 'actual' && m.menu);
         if (actuals.length) c.representative_menu = actuals.reduce((a,b)=> (b.kcal > a.kcal ? b : a)).menu;
         else { const planned = sortMeals(ms.filter(m => m.status === 'planned' && m.menu)); c.representative_menu = planned.length ? planned[0].menu : null; }

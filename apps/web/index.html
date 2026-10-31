@@ -1,31 +1,52 @@
 <!doctype html>
-<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>AIメシモリ</title><link rel="manifest" href="/manifest.json"><link rel="stylesheet" href="/style.css"></head>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIメシモリ</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="stylesheet" href="/style.css">
+</head>
 <body>
 <div class="phone">
   <header>
-    <div class="brand">🍽️ AIメシモリ <span class="mock-badge">ローカル版</span></div>
-    <div class="nav"><button id="prev" aria-label="前の月">‹</button><span id="ym"></span><button id="next" aria-label="次の月">›</button></div>
+    <div class="brand">🍽️ AIメシモリ <span class="badge">ローカル版</span></div>
+    <div class="ym"><button id="prevM" aria-label="前の月">‹</button><span id="ymLabel">2026年 10月</span><button id="nextM" aria-label="次の月">›</button></div>
   </header>
-  <nav class="tabs">
-    <button data-tab="cal" class="on">📅 カレンダー</button>
-    <button data-tab="weight">⚖️ 体重</button>
-  </nav>
+
   <main>
-    <section id="view-cal">
-      <div id="cal"></div>
-      <div class="legend"><span class="dot a"></span>actual <span class="dot p"></span>planned <span class="dot s"></span>skipped　／　合計は actual の中央値のみ</div>
-      <section id="detail"><p class="hint">日をタップすると、その日の食事が出るよ</p></section>
+    <!-- PAGE: calendar -->
+    <section class="page" id="page-calendar">
+      <div class="grid" id="grid"></div>
+      <p class="hint">色: 🔴オーバー ／ 🟢セーフ（標準の65〜100%） ／ 🔵少なすぎ（65%未満）。濃さは度合い。絵文字はその日のスタンプ（代表メニュー・場所・出来事から）。破線＋薄い絵文字は予定のみの日。日を選ぶと下にゲージが出る。</p>
+      <div id="dayPanel"></div>
     </section>
-    <section id="view-weight" hidden>
-      <h2>⚖️ 体重推移 <small>（標準時 std_date で引く）</small></h2>
+
+    <!-- PAGE: day detail -->
+    <section class="page" id="page-day">
+      <button class="backbtn" id="backToCal">‹ カレンダーへ戻る</button>
+      <div id="dayBody"></div>
+    </section>
+
+    <!-- PAGE: weight -->
+    <section class="page" id="page-weight">
+      <h2>⚖️ 体重推移 <small class="hint">（標準時 std_date で引く）</small></h2>
+      <div class="seg" id="wseg"><button data-w="week">週</button><button data-w="month" class="on">月</button><button data-w="year">年</button></div>
+      <p class="hint" id="wnote">月表示: 日別の実測ポイント</p>
       <div id="wchart"></div>
       <div id="wlist"></div>
-      <p class="hint">目標ライン: 100.0 kg（2026年12月末までに 100kg 未満）</p>
+      <p class="hint">目標: 2026年12月末までに 100kg 未満。食事メニューは現地時刻、グラフは標準時、という二重持ちの使い分け。</p>
     </section>
+
   </main>
-  <footer>AIメシモリ ・ データは 2026年10月の実記録から seed</footer>
+
+  <nav class="tabs">
+    <a href="#/calendar" data-nav="calendar"><span class="ic">📅</span>カレンダー</a>
+    <a href="#/weight" data-nav="weight"><span class="ic">⚖️</span>体重</a>
+  </nav>
 </div>
+
 <script src="/app.js"></script>
 <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(()=>{})</script>
-</body></html>
+</body>
+</html>
