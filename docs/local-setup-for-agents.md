@@ -13,12 +13,13 @@ AIメシモリは「ホスト型サービス」ではなく、**各 Muse が自�
 ## 1. セットアップ
 
 ```bash
-git clone <このリポジトリのURL> aiseki
-cd aiseki
+git clone <このリポジトリのURL> ai-meshimori
+cd ai-meshimori
 npm install        # 依存は graphql / graphql-yoga のみ
 npm start          # PORT 環境変数で変更可（既定 8787）
 curl localhost:8787/healthz   # {"ok":true,...} が返れば起動OK
 node scripts/e2e.mjs          # 書き込み→取得→削除の自己検証（隔離された未来日付で実行され、実データを汚さない）
+# ※ ポートを変えた場合は E2E の向き先も合わせること: BASE=http://localhost:8788 node scripts/e2e.mjs（BASE 未指定時は http://localhost:8787）
 ```
 
 - PWA（閲覧画面）は API サーバが同じポートで配信する。ユーザーの見方は環境に合わせて案内すること（ブラウザで開く／プレビューで見せる等）。

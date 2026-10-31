@@ -1,4 +1,4 @@
-app = "aiseki"
+app = "ai-meshimori"
 primary_region = "nrt"
 [build]
   dockerfile = "Dockerfile"
@@ -8,5 +8,5 @@ primary_region = "nrt"
   auto_stop_machines = false
   min_machines_running = 1
 [mounts]
-  source = "aiseki_data"
+  source = "ai_meshimori_data"
   destination = "/app/data"
