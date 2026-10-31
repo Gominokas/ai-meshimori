@@ -7,7 +7,7 @@ function range(kcal,pm){ return pm? `${kcal-pm}〜${kcal+pm}` : `${kcal}`; }
 
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.tabs button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
-  ['cal','weight','keys'].forEach(t=>{ document.querySelector('#view-'+t).hidden = t!==b.dataset.tab; });
+  ['cal','weight'].forEach(t=>{ document.querySelector('#view-'+t).hidden = t!==b.dataset.tab; });
 });
 
 async function render(){

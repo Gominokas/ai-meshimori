@@ -16,16 +16,6 @@ const MIME = { '.html':'text/html; charset=utf-8', '.js':'text/javascript; chars
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
   if (url.pathname === '/healthz') { res.writeHead(200, {'content-type':'application/json'}); return res.end(JSON.stringify({ok:true, service:'aiseki', ts:new Date().toISOString()})); }
-  if (url.pathname === '/.well-known/aithlon.json') {
-    res.writeHead(200, {'content-type':'application/json'});
-    return res.end(JSON.stringify({
-      aithlon_version: '0.1-draft',
-      service: 'AIseki',
-      endpoints: { graphql: '/graphql', signup: '/aithlon/signup', race: ['/aithlon/race/1','/aithlon/race/2'], race_answer: '/aithlon/race/answer', claim_base: '/claim' },
-      params: { key_ttl_days: 90, blob_ttl_seconds: 300, race_fast_ms: 300, race_slow_ms: 5000, rotation_overlap_hours: 24, signature_alg: 'Ed25519' },
-      status: 'discovery-only: signup/race not yet implemented (phase1 step 6)'
-    }, null, 2));
-  }
   if (url.pathname.startsWith('/graphql')) return yoga(req, res);
   // static PWA
   let p = url.pathname === '/' ? '/index.html' : url.pathname;

@@ -14,7 +14,7 @@
 
 ## Local dev (Phase1 scaffold, 2026-10-31)
 - Runtime: Node 24 (node:sqlite for local dev DB; production target Postgres on Fly.io — DB layer is isolated in apps/api/src/db.js)
-- API: GraphQL Yoga on Node http (same process serves PWA static + /.well-known/aithlon.json placeholder)
+- API: GraphQL Yoga on Node http (same process serves PWA static)
 - Run: `npm install && npm start`  -> http://localhost:8787/  (PWA), /graphql, /healthz
 
 Local DB note: this VM has no Docker/Postgres, so local dev uses SQLite file data/aiseki.db.

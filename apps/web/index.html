@@ -10,7 +10,6 @@
   <nav class="tabs">
     <button data-tab="cal" class="on">📅 カレンダー</button>
     <button data-tab="weight">⚖️ 体重</button>
-    <button data-tab="keys">🔐 連携・鍵</button>
   </nav>
   <main>
     <section id="view-cal">
@@ -23,22 +22,6 @@
       <div id="wchart"></div>
       <div id="wlist"></div>
       <p class="hint">目標ライン: 100.0 kg（2026年12月末までに 100kg 未満）</p>
-    </section>
-    <section id="view-keys" hidden>
-      <h2>🔐 AIthlon 連携 <small>（モック画面）</small></h2>
-      <ol class="flow">
-        <li>AIが <code>/.well-known/aithlon.json</code> を読む</li>
-        <li>AIが公開鍵でサインアップ → claim URL をあなたへ</li>
-        <li>あなたが Google でサインイン</li>
-        <li>連携ブロブ（5分）を AI へ渡す</li>
-        <li>GET 2本レース＋署名で最終登録 → active</li>
-      </ol>
-      <div class="blob">連携ブロブ例: <code>eyJzZXNzaW9uIjoiYWlzZWtpLWRlbW8iLCJleHAiOjMwMH0…</code> <button disabled>コピー（モック）</button></div>
-      <h3>接続中の鍵</h3>
-      <div class="key"><div><b>Serina (Muse) - 2026-10-31</b><br><small>Ed25519 ・ scope: meals/days 読み書き ・ 残り 89日</small></div><span class="pill active">active</span><button disabled>失効</button></div>
-      <div class="key"><div><b>予備キー（未使用）</b><br><small>登録待ち</small></div><span class="pill pending">pending</span><button disabled>失効</button></div>
-      <button class="panic" disabled>🚨 全鍵パニック失効（モック）</button>
-      <p class="hint">生のAPIキーは発行しない。失効はこの画面から即時反映。</p>
     </section>
   </main>
   <footer>AIメシモリ ・ データは 2026年10月の実記録から seed</footer>
