@@ -169,7 +169,7 @@ function gaugeBlock(info, date, compact){
     gauge += '<div class="tick" style="left:'+(TARGET/scale*100)+'%"><span>標準 '+TARGET+'</span></div>';
   } else if (tot > 0){
     gauge += '<div class="marginfill" style="left:'+(tot/scale*100)+'%;width:'+((TARGET-tot)/scale*100)+'%"></div>';
-    gauge += '<div class="glabel dark" style="left:'+(tot/scale*100)+'%">あと '+(TARGET-tot)+'</div>';
+    if ((TARGET-tot)/scale*100 >= 15) gauge += '<div class="glabel dark" style="left:'+(tot/scale*100)+'%">あと '+(TARGET-tot)+'</div>';
   }
   gauge += '</div>';
   if (legend) gauge += '<div class="legend">'+legend+'</div>';
