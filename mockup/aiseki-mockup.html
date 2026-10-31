@@ -8,10 +8,10 @@
   *{box-sizing:border-box}
   body{font-family:system-ui,-apple-system,"Hiragino Sans",sans-serif;margin:0;background:#e9ede9;color:#1c2420}
   .phone{max-width:430px;margin:0 auto;background:#fff;min-height:100vh;box-shadow:0 0 24px rgba(0,0,0,.10);position:relative}
-  header{padding:14px 14px 6px;display:flex;justify-content:space-between;align-items:center}
-  .brand{font-size:20px;font-weight:800}
+  header{padding:14px 14px 6px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;row-gap:6px}
+  .brand{font-size:20px;font-weight:800;white-space:nowrap}
   .badge{font-size:10px;background:#ffefc2;border:1px solid #e3c565;padding:2px 7px;border-radius:999px;vertical-align:middle}
-  .ym{font-weight:700;color:#445;display:flex;align-items:center;gap:10px}
+  .ym{font-weight:700;color:#445;display:flex;align-items:center;gap:6px;white-space:nowrap}
   .ym button{border:1px solid #ccd;background:#fff;border-radius:8px;width:30px;height:30px;font-size:16px;cursor:pointer;color:#445}
   .ym button:disabled{opacity:.28;cursor:default}
   main{padding:0 14px 120px}
@@ -337,7 +337,7 @@ function gaugeBlock(info, date, compact){
     gauge += '<div class="tick" style="left:'+(TARGET/scale*100)+'%"><span>標準 '+TARGET+'</span></div>';
   } else if (tot > 0){
     gauge += '<div class="marginfill" style="left:'+(tot/scale*100)+'%;width:'+((TARGET-tot)/scale*100)+'%"></div>';
-    gauge += '<div class="glabel dark" style="left:'+(tot/scale*100)+'%">あと '+(TARGET-tot)+'</div>';
+    if ((TARGET-tot)/scale*100 >= 15) gauge += '<div class="glabel dark" style="left:'+(tot/scale*100)+'%">あと '+(TARGET-tot)+'</div>';
   }
   gauge += '</div>';
   if (legend) gauge += '<div class="legend">'+legend+'</div>';
