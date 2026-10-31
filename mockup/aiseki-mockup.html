@@ -11,7 +11,8 @@
   header{padding:14px 14px 6px;display:flex;justify-content:space-between;align-items:center}
   .brand{font-size:20px;font-weight:800}
   .badge{font-size:10px;background:#ffefc2;border:1px solid #e3c565;padding:2px 7px;border-radius:999px;vertical-align:middle}
-  .ym{font-weight:700;color:#445}
+  .ym{font-weight:700;color:#445;display:flex;align-items:center;gap:10px}
+  .ym button{border:1px solid #ccd;background:#fff;border-radius:8px;width:30px;height:30px;font-size:16px;cursor:pointer;color:#445}
   main{padding:0 14px 120px}
   /* --- page transitions (single file, hash routing) --- */
   .page{display:none}
@@ -108,7 +109,7 @@
 <div class="phone">
   <header>
     <div class="brand">🍽️ AIメシモリ <span class="badge">ローカル版</span></div>
-    <div class="ym" id="ymLabel">2026年 10月</div>
+    <div class="ym"><button id="prevM" aria-label="前の月">‹</button><span id="ymLabel">2026年 10月</span><button id="nextM" aria-label="次の月">›</button></div>
   </header>
 
   <main>
@@ -219,6 +220,7 @@ function dayStatus(total){
 var selectedDate = '2026-10-31';
 function selectDay(date){
   selectedDate = date;
+  if (date.slice(0,7) !== calYM){ calYM = date.slice(0,7); renderCalendar(); }
   document.querySelectorAll('#grid .cell').forEach(function(c){
     c.classList.toggle('sel', c.getAttribute('data-selday') === date);
   });
@@ -239,12 +241,18 @@ function selectDay(date){
   var b = panel.querySelector('[data-goday]');
   if (b) b.addEventListener('click', function(){ navigate('day', date); });
 }
-(function(){
+var calYM = selectedDate.slice(0,7);
+function fmtYM(ym){ var a = ym.split('-'); return a[0]+'年 '+Number(a[1])+'月'; }
+function shiftYM(ym, delta){ var a = ym.split('-'); var d = new Date(Number(a[0]), Number(a[1])-1+delta, 1); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); }
+function renderCalendar(){
   var g = document.getElementById('grid');
+  var a = calYM.split('-'), y = Number(a[0]), m = Number(a[1]);
+  var lead = (new Date(y, m-1, 1).getDay()+6)%7;
+  var days = new Date(y, m, 0).getDate();
   var html = ["月","火","水","木","金","土","日"].map(function(d){ return '<div class="dow">'+d+'</div>'; }).join('');
-  for (var i=0;i<3;i++) html += '<div class="cell empty"></div>';
-  for (var d=1; d<=31; d++){
-    var date = "2026-10-" + String(d).padStart(2,'0');
+  for (var i=0;i<lead;i++) html += '<div class="cell empty"></div>';
+  for (var d=1; d<=days; d++){
+    var date = calYM + "-" + String(d).padStart(2,'0');
     var st = dayStatus(TOT[date]);
     if (st) html += '<button class="cell" data-selday="'+date+'" style="background:'+st.bg+'"><b>'+d+'</b><span class="emo">'+(DAY_EMOJI[date]||'🍽️')+'</span></button>';
     else html += '<button class="cell none" data-selday="'+date+'"><b>'+d+'</b></button>';
@@ -253,6 +261,12 @@ function selectDay(date){
   g.querySelectorAll('[data-selday]').forEach(function(b){
     b.addEventListener('click', function(){ selectDay(b.getAttribute('data-selday')); });
   });
+  if (lastPage !== 'day') document.getElementById('ymLabel').textContent = fmtYM(calYM);
+}
+(function(){
+  renderCalendar();
+  document.getElementById('prevM').addEventListener('click', function(){ calYM = shiftYM(calYM, -1); renderCalendar(); });
+  document.getElementById('nextM').addEventListener('click', function(){ calYM = shiftYM(calYM, 1); renderCalendar(); });
   selectDay(selectedDate);
   document.getElementById('wlist').innerHTML = WEIGHTS.map(function(r){
     return '<div class="wrow"><span>'+r[0]+'（東京）</span><b>'+r[1]+' kg</b><span>'+r[2]+'%</span></div>';
@@ -361,7 +375,7 @@ function applyRoute(name, arg){
   document.querySelectorAll('nav.tabs a').forEach(function(a){
     a.classList.toggle('on', a.getAttribute('data-nav') === (page==='day' ? 'calendar' : page));
   });
-  document.getElementById('ymLabel').textContent = (page==='day' && arg) ? arg : '2026年 10月';
+  document.getElementById('ymLabel').textContent = (page==='day' && arg) ? arg : fmtYM(calYM);
   lastPage = page;
   window.scrollTo(0,0);
 }
