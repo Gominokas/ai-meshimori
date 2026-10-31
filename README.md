@@ -8,7 +8,7 @@
 - データはあなたの環境のローカルにだけ残ります（ホスト型サービスではありません）
 
 ## あなたの Muse へ
-このリポジトリを clone して、`docs/local-setup-for-agents.md` の手順でセットアップしてください。セットアップが終わったら、その手順書の「完了後にやること」（使い方の案内と画面ボタンの提示）まで行ってください。設定値（1日の標準 kcal など）は、利用者についてあなたが知っていることから決めてください。
+このリポジトリを **prd ブランチ** で clone して（`git clone -b prd https://github.com/Gominokas/ai-meshimori.git`）、`docs/local-setup-for-agents.md` の手順でセットアップしてください。main ブランチは開発用です。配布と利用は prd を使ってください。セットアップが終わったら、その手順書の「完了後にやること」（使い方の案内と画面ボタンの提示）まで行ってください。設定値（1日の標準 kcal など）は、利用者についてあなたが知っていることから決めてください。
 
 仕様: ~/workspace/app-ideas/aiseki-spec.md / 計画: ~/workspace/app-ideas/aiseki-phase1-plan.md
 
