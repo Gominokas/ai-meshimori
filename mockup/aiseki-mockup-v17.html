@@ -169,6 +169,10 @@
 
 <script>
 // meal = [time, type, tag, menu, kcal, pm, status, note]
+/* === DATA BLOCK（流し込み契約） ===
+   このブロックの変数名・形式（DAYS / TARGET / TOT / SHORT / WEIGHTS / MEAL_EMOJI / DAY_EMOJI / selectedDate）は、
+   表示生成スクリプトが実データで置換する契約面。構造を変える時はダイエット窓（生成側）へ一報すること。
+   見た目（CSS・描画ロジック）の変更は自由で、そのまま表示に反映される。 */
 var DAYS = {
   "2026-10-27": { w:null, meals:[
     ["09:00","朝食","","ザクチキ",218,0,"a",""],
