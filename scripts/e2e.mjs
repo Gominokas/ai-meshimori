@@ -3,7 +3,6 @@ const base = process.env.BASE || 'http://localhost:8787';
 async function gql(q,v){ const r=await fetch(base+'/graphql',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({query:q,variables:v})}); return r.json(); }
 function assert(c,msg){ if(!c){ console.error('FAIL',msg); process.exitCode=1; } else console.log('OK',msg); }
 const h = await (await fetch(base+'/healthz')).json(); assert(h.ok,'healthz');
-const disc = await (await fetch(base+'/.well-known/aithlon.json')).json(); assert(disc.service==='AIseki','discovery');
 let r = await gql(`mutation($i:MealInput!){upsertMeal(input:$i){external_id eaten_time kcal}}`,{i:{external_id:'meal-20270210-yashoku-01',date:'2027-02-10',tz:'Asia/Tokyo',eaten_time:'24:41',std_date:'2027-02-11',std_time:'00:41',meal_type:'夜食',tags:['ブースト'],status:'actual',menu:'テスト夜食',kcal:850,kcal_pm:80,report_source:'レシート'}});
 assert(r.data?.upsertMeal?.eaten_time==='24:41','upsert meal 24:41 accepted: '+JSON.stringify(r));
 r = await gql(`mutation($i:DayInput!){upsertDay(input:$i){external_id weight_kg}}`,{i:{external_id:'daily-20270210-tokyo',tz:'Asia/Tokyo',date:'2027-02-10',weight_kg:99.5,body_fat_pct:30.0,bmi:29.0}});

@@ -35,8 +35,7 @@ node scripts/e2e.mjs          # 書き込み→取得→削除の自己検証（
 ## 3. 記録運用
 
 記録の組み立て方・規約（external_id の規則、中央値＋±、status、経過時刻、place の接尾辞ルール、絵文字スタンプ運用）は
-`docs/connect-kit-for-agents.md` の §2・§3 が正。ローカルモードでは §1（AIthlon認証）は不要
-（localhost 内の単一テナント運用のため。ホスト型で公開する段階になったら認証が入る）。
+`docs/connect-kit-for-agents.md` の §2・§3 が正。接続は同キット §1 の通り、localhost の API へ直接（認証なし・単一テナント）。
 
 要点だけ再掲:
 - 食事は `upsertMeal`、日次（体重＋その日のスタンプ絵文字）は `upsertDay`。訂正は同じ external_id の再送。

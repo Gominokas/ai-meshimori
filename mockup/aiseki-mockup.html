@@ -143,29 +143,11 @@
       <p class="hint">目標: 2026年12月末までに 100kg 未満。食事メニューは現地時刻、グラフは標準時、という二重持ちの使い分け。</p>
     </section>
 
-    <!-- PAGE: keys / AIthlon -->
-    <section class="page" id="page-keys">
-      <h2>🔐 AIthlon 連携 <small class="hint">（モック画面）</small></h2>
-      <ol class="flow">
-        <li>AIが <code>/.well-known/aithlon.json</code> を読む</li>
-        <li>AIが公開鍵でサインアップ → claim URL をあなたへ</li>
-        <li>あなたが Google でサインイン</li>
-        <li>連携ブロブ（5分）を AI へ渡す</li>
-        <li>GET 2本レース＋署名で最終登録 → active</li>
-      </ol>
-      <div class="blob">連携ブロブ例: <code>eyJzZXNzaW9uIjoiYWlzZWtpLWRlbW8iLCJleHAiOjMwMH0…</code></div>
-      <h3>接続中の鍵</h3>
-      <div class="key"><div><b>Serina (Muse) - 2026-10-31</b><br><small>Ed25519 ・ scope: meals/days 読み書き ・ 残り 89日</small></div><span class="pill">active</span></div>
-      <div class="key"><div><b>予備キー（未使用）</b><br><small>登録待ち</small></div><span class="pill pd">pending</span></div>
-      <button class="panic" disabled>🚨 全鍵パニック失効（モック）</button>
-      <p class="hint">生のAPIキーは発行しない。失効はこの画面から即時反映。</p>
-    </section>
   </main>
 
   <nav class="tabs">
     <a href="#/calendar" data-nav="calendar"><span class="ic">📅</span>カレンダー</a>
     <a href="#/weight" data-nav="weight"><span class="ic">⚖️</span>体重</a>
-    <a href="#/keys" data-nav="keys"><span class="ic">🔐</span>連携・鍵</a>
   </nav>
 </div>
 
@@ -366,7 +348,7 @@ function renderDay(date){
   el.innerHTML = out;
 }
 
-// hash router: #/calendar, #/day/YYYY-MM-DD, #/weight, #/keys
+// hash router: #/calendar, #/day/YYYY-MM-DD, #/weight
 var lastPage = 'calendar';
 function applyRoute(name, arg){
   var page = (name==='day') ? 'day' : (name || 'calendar');
