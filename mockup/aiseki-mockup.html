@@ -26,6 +26,8 @@
   .dow{text-align:center;font-weight:600;color:#778;font-size:12px}
   .cell{aspect-ratio:1/1.02;border:1px solid #e2e6e2;border-radius:10px;padding:3px 2px;cursor:pointer;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:13px;color:#223;background:#fff;min-width:0}
   .cell .emo{font-size:15px;line-height:1}
+  .cell.plan{border-style:dashed;border-color:#a9c3e8;background:#fbfcfe}
+  .cell .emo.faint{opacity:.45}
   .cell.sel{outline:3px solid #333;outline-offset:-1px}
   .cell.none{color:#aab}
   #dayPanel{margin-top:14px;border-top:1px solid #e2e6e2;padding-top:10px}
@@ -117,7 +119,7 @@
     <!-- PAGE: calendar -->
     <section class="page" id="page-calendar">
       <div class="grid" id="grid"></div>
-      <p class="hint">色: 🔴オーバー ／ 🟢セーフ（標準の65〜100%） ／ 🔵少なすぎ（65%未満）。濃さは度合い。絵文字はその日のスタンプ（代表メニュー・場所・出来事から）。日を選ぶと下にゲージが出る。</p>
+      <p class="hint">色: 🔴オーバー ／ 🟢セーフ（標準の65〜100%） ／ 🔵少なすぎ（65%未満）。濃さは度合い。絵文字はその日のスタンプ（代表メニュー・場所・出来事から）。破線＋薄い絵文字は予定のみの日。日を選ぶと下にゲージが出る。</p>
       <div id="dayPanel"></div>
     </section>
 
@@ -178,7 +180,9 @@ var DAYS = {
     ["24:41","夜食","ブースト","セブンイレブン夜食セット（ツナマヨ＋ダブルシュー＋羊羹×2＋ゼロコーラ）",850,80,"a","本稼働データメンテ深夜作業の燃料","セブンイレブン（購入）"]]},
   "2026-10-31": { w:"⚖️ 100.9kg ・ 体脂肪 33.1% ・ BMI 29.8", meals:[
     ["14:25","昼食","","ダブル鬼おろしロースかつ＋カキフライ2個 定食・特盛ライス",1580,80,"a","本日1食目","松のや R八千代店"],
-    ["--:--","夕食","","トマトジュース（理想のトマト、在庫消費）",90,20,"p","昼で満腹のため欠食見込み・未確定"]]}
+    ["--:--","夕食","","トマトジュース（理想のトマト、在庫消費）",90,20,"p","昼で満腹のため欠食見込み・未確定"]]},
+  "2026-11-01": { w:null, meals:[
+    ["19:00","夕食","","タコス 3個",750,40,"p","シェアハウスでタコスパーティーの予定"]]}
 };
 var TARGET = 1860;
 var TOT = {"2026-10-27":1387,"2026-10-28":1677,"2026-10-29":2656,"2026-10-30":1299,"2026-10-31":1580};
@@ -189,7 +193,7 @@ var WEIGHTS = [["2026-10-28",101.8,33.8],["2026-10-29",102.5,33.5],["2026-10-30"
 // v9: cells carry almost nothing — date + one emoji on a status gradient.
 // Color: over = red family, safe (75-100% of target) = green family, too little (<75%) = blue family;
 // the deeper the color, the further from the safe zone.
-var MEAL_EMOJI = {"2026-10-27|19:30":"🍝","2026-10-28|07:30":"🍜","2026-10-28|19:00":"🍝","2026-10-28|25:25":"🍝","2026-10-29|08:15":"🍙","2026-10-29|09:46":"🍔","2026-10-29|13:30":"🍔","2026-10-29|18:30":"🍱","2026-10-29|24:35":"🍝","2026-10-30|12:30":"🍝","2026-10-30|24:41":"🍙","2026-10-31|14:25":"🍱","2026-10-31|--:--":"🍅"};
+var MEAL_EMOJI = {"2026-10-27|19:30":"🍝","2026-10-28|07:30":"🍜","2026-10-28|19:00":"🍝","2026-10-28|25:25":"🍝","2026-10-29|08:15":"🍙","2026-10-29|09:46":"🍔","2026-10-29|13:30":"🍔","2026-10-29|18:30":"🍱","2026-10-29|24:35":"🍝","2026-10-30|12:30":"🍝","2026-10-30|24:41":"🍙","2026-10-31|14:25":"🍱","2026-10-31|--:--":"🍅","2026-11-01|19:00":"🌮"};
 function mealEmoji(date, m){ return MEAL_EMOJI[date+'|'+m[0]] || ''; }
 var DAY_EMOJI = {"2026-10-27":"🍝","2026-10-28":"🍝","2026-10-29":"🍔","2026-10-30":"🍙","2026-10-31":"🐷"};
 function dayStatus(total){
@@ -199,6 +203,20 @@ function dayStatus(total){
   else if (r >= 0.65){ var t2 = (r - 0.65) / 0.35; bg = 'hsl(145,50%,' + Math.round(90 - 16*t2) + '%)'; }
   else { var t3 = Math.min(1, (0.65 - r) / 0.65); bg = 'hsl(210,75%,' + Math.round(90 - 22*t3) + '%)'; }
   return { bg: bg };
+}
+function plannedEmoji(date){
+  var info = DAYS[date]; if (!info) return '';
+  var ps = info.meals.filter(function(m){ return m[6]==='p'; });
+  if (!ps.length) return '';
+  var rep = ps.reduce(function(a,b){ return b[4]>a[4]?b:a; });
+  return mealEmoji(date, rep) || '🗓️';
+}
+function panelRows(date, info){
+  return info.meals.map(function(m){
+    var st = m[6]==='a' ? '' : (m[6]==='p' ? '（予定）' : '（なし）');
+    var em2 = mealEmoji(date, m);
+    return '<div class="pmrow"><span class="pt">'+m[0]+'</span><span class="pm">'+(em2? em2+' ':'')+m[1]+' '+m[3]+st+'</span><span class="pk">'+(m[6]==='s'? '' : m[4]+' kcal')+'</span></div>';
+  }).join('');
 }
 var selectedDate = '2026-10-31';
 function selectDay(date){
@@ -210,16 +228,22 @@ function selectDay(date){
   var panel = document.getElementById('dayPanel');
   var info = DAYS[date], total = TOT[date];
   var head = '<div class="phead">' + date + (DAY_EMOJI[date] ? ' ' + DAY_EMOJI[date] : '') + (info && info.w ? '　' + info.w : '') + '</div>';
-  if (!info || !total){
-    panel.innerHTML = head + '<p class="hint">この日は記録なし</p>'
-      + '<button class="confirmbtn" data-goday="' + date + '">内容を確認（日詳細へ）</button>';
+  var btn = '<button class="confirmbtn" data-goday="' + date + '">内容を確認（日詳細へ）</button>';
+  if (!info){
+    panel.innerHTML = head + '<p class="hint">この日は記録なし</p>' + btn;
+  } else if (!total){
+    var ps = info.meals.filter(function(m){ return m[6]==='p'; });
+    if (ps.length){
+      var pk = ps.reduce(function(s,m){ return s+m[4]; }, 0);
+      var ppm = ps.reduce(function(s,m){ return s+(m[5]||0); }, 0);
+      panel.innerHTML = head
+        + '<p class="total">📅 予定あり（実績はまだなし）<br>予定合計: <b>' + pk + ' kcal</b>' + (ppm ? '（' + (pk-ppm) + '〜' + (pk+ppm) + '）' : '') + ' ／ 標準 ' + TARGET + ' kcal</p>'
+        + panelRows(date, info) + btn;
+    } else {
+      panel.innerHTML = head + '<p class="hint">この日は記録なし</p>' + btn;
+    }
   } else {
-    var rows = info.meals.map(function(m){
-      var st = m[6]==='a' ? '' : (m[6]==='p' ? '（予定）' : '（なし）');
-      var em2 = mealEmoji(date, m); return '<div class="pmrow"><span class="pt">'+m[0]+'</span><span class="pm">'+(em2? em2+' ':'')+m[1]+' '+m[3]+st+'</span><span class="pk">'+(m[6]==='a'? m[4]+' kcal':'')+'</span></div>';
-    }).join('');
-    panel.innerHTML = head + gaugeBlock(info, date) + rows
-      + '<button class="confirmbtn" data-goday="' + date + '">内容を確認（日詳細へ）</button>';
+    panel.innerHTML = head + gaugeBlock(info, date) + panelRows(date, info) + btn;
   }
   var b = panel.querySelector('[data-goday]');
   if (b) b.addEventListener('click', function(){ navigate('day', date); });
@@ -238,7 +262,11 @@ function renderCalendar(){
     var date = calYM + "-" + String(d).padStart(2,'0');
     var st = dayStatus(TOT[date]);
     if (st) html += '<button class="cell" data-selday="'+date+'" style="background:'+st.bg+'"><b>'+d+'</b><span class="emo">'+(DAY_EMOJI[date]||'🍽️')+'</span></button>';
-    else html += '<button class="cell none" data-selday="'+date+'"><b>'+d+'</b></button>';
+    else {
+      var pe = plannedEmoji(date);
+      if (pe) html += '<button class="cell plan" data-selday="'+date+'"><b>'+d+'</b><span class="emo faint">'+pe+'</span></button>';
+      else html += '<button class="cell none" data-selday="'+date+'"><b>'+d+'</b></button>';
+    }
   }
   g.innerHTML = html;
   g.querySelectorAll('[data-selday]').forEach(function(b){
