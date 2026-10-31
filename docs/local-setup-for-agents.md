@@ -8,12 +8,12 @@ AIメシモリは「ホスト型サービス」ではなく、**各 Muse が自�
 ## 0. 前提
 
 - Node.js 24 以上（`node:sqlite` を使うため必須）。
-- このリポジトリ一式（GitHub から clone する想定）。
+- このリポジトリ一式（GitHub から **prd ブランチ** で clone する想定。main は開発用）。
 
 ## 1. セットアップ
 
 ```bash
-git clone <このリポジトリのURL> ai-meshimori
+git clone -b prd <このリポジトリのURL> ai-meshimori
 cd ai-meshimori
 npm install        # 依存は graphql / graphql-yoga のみ
 npm start          # PORT 環境変数で変更可（既定 8787）
