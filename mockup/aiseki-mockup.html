@@ -13,6 +13,7 @@
   .badge{font-size:10px;background:#ffefc2;border:1px solid #e3c565;padding:2px 7px;border-radius:999px;vertical-align:middle}
   .ym{font-weight:700;color:#445;display:flex;align-items:center;gap:10px}
   .ym button{border:1px solid #ccd;background:#fff;border-radius:8px;width:30px;height:30px;font-size:16px;cursor:pointer;color:#445}
+  .ym button:disabled{opacity:.28;cursor:default}
   main{padding:0 14px 120px}
   /* --- page transitions (single file, hash routing) --- */
   .page{display:none}
@@ -108,7 +109,7 @@
 <body>
 <div class="phone">
   <header>
-    <div class="brand">🍽️ AIメシモリ <span class="badge">ローカル版</span></div>
+    <div class="brand">🍽️ AIメシモリ <span class="badge" id="editionBadge">focus</span></div>
     <div class="ym"><button id="prevM" aria-label="前の月">‹</button><span id="ymLabel">2026年 10月</span><button id="nextM" aria-label="次の月">›</button></div>
   </header>
 
@@ -261,6 +262,11 @@ function renderCalendar(){
   g.querySelectorAll('[data-selday]').forEach(function(b){
     b.addEventListener('click', function(){ selectDay(b.getAttribute('data-selday')); });
   });
+  var allDates = Object.keys(DAYS).concat(Object.keys(TOT)).sort();
+  if (allDates.length){
+    document.getElementById('prevM').disabled = calYM <= allDates[0].slice(0,7);
+    document.getElementById('nextM').disabled = calYM >= allDates[allDates.length-1].slice(0,7);
+  }
   if (lastPage !== 'day') document.getElementById('ymLabel').textContent = fmtYM(calYM);
 }
 (function(){
