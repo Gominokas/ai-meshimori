@@ -9,12 +9,13 @@ AIメシモリは「ホスト型サービス」ではなく、**各 Muse が自�
 
 - Node.js 24 以上（`node:sqlite` を使うため必須）。
 - このリポジトリ一式（GitHub から **prd ブランチ** で clone する想定。main は開発用）。
+- リポジトリは3部構成（`shared/` = 共有部、`prd/` = ローカル版、`muse-prd/` = Muse 版）。この手順書の作業はすべて `prd/` フォルダの中で行う。
 
 ## 1. セットアップ
 
 ```bash
 git clone -b prd <このリポジトリのURL> ai-meshimori
-cd ai-meshimori
+cd ai-meshimori/prd
 npm install        # 依存は graphql / graphql-yoga のみ
 npm start          # PORT 環境変数で変更可（既定 8787）
 curl localhost:8787/healthz   # {"ok":true,...} が返れば起動OK
@@ -55,7 +56,7 @@ node scripts/e2e.mjs          # 書き込み→取得→削除の自己検証（
 ## 3. 記録運用
 
 記録の組み立て方・規約（external_id の規則、中央値＋±、status、経過時刻、place の接尾辞ルール、絵文字スタンプ運用）は
-`docs/connect-kit-for-agents.md` の §2・§3 が正。接続は同キット §1 の通り、localhost の API へ直接（認証なし・単一テナント）。
+`muse-prd/connect-kit-for-agents.md` の §2・§3 が正。接続は同キット §1 の通り、localhost の API へ直接（認証なし・単一テナント）。
 
 要点だけ再掲:
 - 食事は `upsertMeal`、日次（体重＋その日のスタンプ絵文字）は `upsertDay`。訂正は同じ external_id の再送。

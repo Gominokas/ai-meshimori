@@ -1,4 +1,4 @@
-> 出典: 本書は `~/workspace/app-ideas/aiseki-artifact-design.md` として作成された設計書を、2026-11-01 に本リポジトリへ移載したもの。以後はこの git 版（`docs/aiseki-artifact-design.md`）を正とする。移載元のファイルは当面残す。
+> 出典: 本書は `~/workspace/app-ideas/aiseki-artifact-design.md` として作成された設計書を、2026-11-01 に本リポジトリへ移載したもの。以後はこの git 版（`muse-prd/aiseki-artifact-design.md`）を正とする。移載元のファイルは当面残す。
 
 # AIメシモリ アーティファクト版 ロジック設計
 
@@ -7,7 +7,7 @@
 ## 0. 原則
 
 - 保存は生レコードだけ。派生（合計・代表メニュー・スタンプ・ゲージ）は描画時に計算する（薄いロジック）。バージョンアップの大半を表示層の差し替えで済ませるため。
-- 見た目はリポジトリ版テンプレート（mockup/aiseki-mockup.html）そのまま。
+- 見た目はリポジトリ版テンプレート（shared/mockup/aiseki-mockup.html）そのまま。
 - 記録の同一性は external_id で担保する（リポジトリ版と同一規約）。
 
 ## 1. データモデル

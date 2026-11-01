@@ -1,4 +1,4 @@
-> 出典: 本書は `~/workspace/app-ideas/aiseki-spec.md` として作成・維持されてきた仕様書を、2026-11-01 に本リポジトリへ移載したもの。以後はこの git 版（`docs/aiseki-spec.md`）を正とする。移載元のファイルは当面残す。
+> 出典: 本書は `~/workspace/app-ideas/aiseki-spec.md` として作成・維持されてきた仕様書を、2026-11-01 に本リポジトリへ移載したもの。以後はこの git 版（`shared/aiseki-spec.md`）を正とする。移載元のファイルは当面残す。
 
 # AIメシモリ 仕様書（実装引き継ぎ版、開発コードネーム: AIseki）
 
