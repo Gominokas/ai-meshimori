@@ -24,7 +24,7 @@
 - kcal表示: 中央値±pm からレンジ復元（745±45 → 700〜790）。pm=0 は単一値。日次合計は actual の中央値合計が主表示、日詳細では合計レンジも出す。
 - status の色（仮デフォルト、試して直す）: actual＝緑系、planned＝青系、skipped＝グレー。
 - 時刻の使い分け: 食事メニューは現地日時、グラフ系（体重推移など時系列）は標準日時。両方とも保存済みカラムで、再計算なし。
-- 同じ日付に複数 tz の日がある場合: カレンダーのマスは日付単位で全 tz 合算（体重は tz 短縮ラベル付きで縦併記、例「東京 101.8／LA 100.2」）、日詳細は (date, tz) ごとに節を分ける。
+- 同じ日付に複数 tz の日がある場合: カレンダーのマスは日付単位で全 tz 合算（体重は tz 短縮ラベル付きで縦併記、例「東京 65.2／LA 64.8」）、日詳細は (date, tz) ごとに節を分ける。
 
 ## 3. データモデル
 
@@ -87,7 +87,7 @@ items: name（必須）、kcal／kcal_pm（任意）、value_source（公式値�
 
 ```json
 {"external_id":"meal-20261029-yashoku-01","date":"2026-10-29","eaten_time":"24:41","meal_type":"夜食","tags":["ブースト"],"status":"actual","menu":"セブンイレブン夜食セット","kcal":850,"kcal_pm":80,"report_source":"レシート","note":"実時刻は翌日0:41だが所属日は10/29"}
-{"external_id":"daily-20261028-tokyo","tz":"Asia/Tokyo","date":"2026-10-28","weight_kg":101.8,"body_fat_pct":33.8,"bmi":30.1,"condition_note":""}
+{"external_id":"daily-20261028-tokyo","tz":"Asia/Tokyo","date":"2026-10-28","weight_kg":65.2,"body_fat_pct":22.4,"bmi":22.8,"condition_note":""}
 ```
 
 ## 5. 認証: AIthlon方式
