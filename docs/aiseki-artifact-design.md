@@ -13,7 +13,7 @@
 ## 1. データモデル
 
 - meals: external_id（一意）, date, tz, eaten_time, std_date, std_time, meal_type, menu, kcal, kcal_pm, status（planned/actual/skipped）, tags[], place, emoji, report_source, value_source, items[{name, kcal, kcal_pm, value_source}]
-- days: external_id（一意）, date, tz, weight_kg, body_fat_pct, bmi, emoji
+- days: external_id（一意）, date, tz, weight_kg, body_fat_pct, bmi, emoji, steps, exercise_minutes, exercise_kcal（運動データはいずれも任意・2026-11-01 追加）
 - settings: target_kcal, current_tz, week_start, spec_version（対応する prd の版）
 
 ## 2. アクション（エージェント用操作）
@@ -24,6 +24,8 @@
 - get_month(month) / get_day(date): エージェント側の確認・提示用（画面はアプリが自DBから直接描く）。
 - import_records({meals, days, settings}): 移行用。external_id upsert で一括投入し、投入件数と日別合計を返す（突合用）。
 - export_records(): 全レコード＋設定を JSON で返す（バックアップ・移行用）。
+- delete_meal(external_id) / delete_day(external_id): 物理削除。存在しない場合はエラー。削除した external_id を返す（2026-11-01 追加。予定の中止・誤登録を skipped の墓標でなく完全削除するため）。
+- next_meal_external_id(date, category): その日・その区分の既存 external_id から、次の連番（2桁ゼロ埋め）を付けた external_id を返す。送信側は登録前にこれで採番する（2026-11-01 追加）。
 
 ## 3. バリデーション（現行仕様どおり）
 

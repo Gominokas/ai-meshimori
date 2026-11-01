@@ -73,6 +73,7 @@ items: name（必須）、kcal／kcal_pm（任意）、value_source（公式値�
 | measured_time | string / null | 任意 | 計測のおおよその時間（現地） |
 | std_date / std_time | date / string | 任意 | 計測の標準日時版。体重グラフはこちらで引く |
 | weight_kg / body_fat_pct / bmi | number | 任意 | 欠損可（体重がない日がある） |
+| steps / exercise_minutes / exercise_kcal | number | 任意 | 運動データ（歩数・運動時間（分）・活動消費kcal）。送信側AIがヘルスケアデータ（Apple Health 等）から日次に自動取り込みする想定で、手入力は前提にしない（2026-11-01 追加） |
 | condition_note | string | 任意 | 体調メモ |
 | emoji | string | 任意 | その日のスタンプ絵文字1つ。代表メニュー・場所・出来事など、その日を象徴するもの（例: 🐷とんかつ三昧、☕カフェ作業）。送信側AIが日次記録と一緒に付ける。カレンダーのセル表示に使い、未指定時は代表メニューからの推定→🍽️ の順でフォールバック |
 
