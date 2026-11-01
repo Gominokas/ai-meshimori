@@ -17,6 +17,19 @@ main は開発統合用で、次の3部をすべて持ちます。
 
 配布は組み立てで行います: **共有部＋prd部 → prd ブランチ**、**共有部＋muse-prd部 → muse-prd ブランチ**。中身はほぼ同じで、出力方法などが版ごとに異なります。
 
+### ドキュメント一覧
+
+文書は各部に分かれて置かれます（配布の組み立てで、その版に必要な文書が一緒に付いて行くため）。全体の地図はこの表が正です。
+
+| 文書 | 場所 | 役割 |
+|---|---|---|
+| 仕様書（aiseki-spec.md） | `shared/` | 正の仕様 |
+| 計画・決定ログ（aiseki-phase1-plan.md） | `shared/` | 決定の履歴 |
+| 画面テンプレート（aiseki-mockup.html） | `shared/mockup/` | 表示の土台（単一HTML） |
+| ローカルセットアップ手順（local-setup-for-agents.md） | `prd/` | ローカル版の導入手順 |
+| アーティファクト版の設計（aiseki-artifact-design.md） | `muse-prd/` | Muse 版のロジック設計 |
+| 接続キット（connect-kit-for-agents.md） | `muse-prd/` | エージェント向けの接続・運用キット |
+
 ## あなたの Muse へ
 使う版に合わせてブランチを選んで clone してください（ローカル版は **prd**、Muse アーティファクト版は **muse-prd**。例: `git clone -b prd https://github.com/Gominokas/ai-meshimori.git`）。main ブランチは開発用です。
 - ローカル版のセットアップ: `prd/local-setup-for-agents.md` の手順（作業は `prd/` フォルダの中）。終わったら手順書の「完了後にやること」（使い方の案内と画面ボタンの提示）まで行ってください。
