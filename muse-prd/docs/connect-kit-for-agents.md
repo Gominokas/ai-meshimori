@@ -8,7 +8,7 @@ AIseki には人間の入力UIがありません。記録はエージェント�
 
 ## 1. 接続（ローカル版）
 
-自分の環境で動いている AIメシモリ API（既定: http://localhost:8787）の `/graphql` に直接リクエストを送る。認証は不要（localhost 内の単一テナント運用）。起動方法は `docs/local-setup-for-agents.md` を参照。
+自分の環境で動いている AIメシモリ API（既定: http://localhost:8787）の `/graphql` に直接リクエストを送る。認証は不要（localhost 内の単一テナント運用）。起動方法は `prd/docs/local-setup-for-agents.md` を参照。
 
 ## 2. 記録の送り方（GraphQL）
 
@@ -46,7 +46,7 @@ AIseki には人間の入力UIがありません。記録はエージェント�
 
 ライブブラウザで PWA を操作して見せる方式は禁止（重い・遅い・壊れやすい、という運用判断で確定）。確定方式は「元ファイル＋データ流し込み」:
 
-1. 土台はリポジトリ内のモック最新版の単一HTML（mockup/aiseki-mockup.html）。
+1. 土台はリポジトリ内のモック最新版の単一HTML（shared/mockup/aiseki-mockup.html）。
 2. GraphQL（calendar / day / weightSeries / me）で最新データを取得し、モック内のデータブロック（DAYS / TARGET / TOT / SHORT / WEIGHTS / MEAL_EMOJI / DAY_EMOJI / selectedDate）だけを実データで置換したHTMLを生成する。HTML本体をエージェントが書き起こさない（トークン消費最小・表示はモックの進化に自動で追随）。
 3. 生成したHTMLファイルをチャットで提示する（ファイル名や置き場は各家庭の運用で決めてよい）。
 4. データブロックの変数名・形式は流し込みの契約面。モック側で構造を変えた場合は、生成側へ一報して追随してもらう。
