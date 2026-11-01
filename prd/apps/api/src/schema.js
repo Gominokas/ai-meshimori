@@ -1,5 +1,5 @@
 import { db, rowToMeal, rowToDay } from './db.js';
-import { validateMeal, validateDay, sortMeals } from '../../../packages/shared/validate.js';
+import { validateMeal, validateDay, sortMeals } from '../../../../shared/validate.js';
 
 export const typeDefs = /* GraphQL */ `
   type Item { name: String!, kcal: Int, kcal_pm: Int, value_source: String, protein_g: Float, protein_pm: Float, fat_g: Float, fat_pm: Float, carbs_g: Float, carbs_pm: Float, salt_g: Float, salt_pm: Float }
