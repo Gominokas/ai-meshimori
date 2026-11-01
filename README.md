@@ -29,6 +29,7 @@ main は開発統合用で、次の3部をすべて持ちます。
 | ローカルセットアップ手順（local-setup-for-agents.md） | `prd/docs/` | ローカル版の導入手順 |
 | アーティファクト版の設計（aiseki-artifact-design.md） | `muse-prd/docs/` | Muse 版のロジック設計 |
 | 接続キット（connect-kit-for-agents.md） | `muse-prd/docs/` | エージェント向けの接続・運用キット |
+| Muse版チュートリアル（tutorial-for-agents.md） | `muse-prd/docs/` | Muse 版の導入手順（単純Q&A方式。prd 版のチュートリアルとは別物） |
 
 ## あなたの Muse へ
 使う版に合わせてブランチを選んで clone してください（ローカル版は **prd**、Muse アーティファクト版は **muse-prd**。例: `git clone -b prd https://github.com/Gominokas/ai-meshimori.git`）。main ブランチは開発用です。
