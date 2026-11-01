@@ -13,7 +13,7 @@ document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{
 async function render(){
   const ym=ymStr(cursor); $('#ym').textContent=cursor.getFullYear()+'年 '+(cursor.getMonth()+1)+'月';
   const data=await gql(`query($m:String!){calendar(month:$m){date total_kcal total_pm meal_count representative_menu emoji days{tz weight_kg}}}`,{m:ym});
-  const me=await gql(`query{me{target_kcal}}`); const TARGET=me.me?.target_kcal||1860;
+  const me=await gql(`query{me{target_kcal}}`); const TARGET=me.me?.target_kcal||2000;
   const map=Object.fromEntries(data.calendar.map(d=>[d.date,d]));
   const first=new Date(cursor.getFullYear(),cursor.getMonth(),1);
   let startDay=(first.getDay()+6)%7;
@@ -39,7 +39,7 @@ async function renderWeight(){
     const W=640,H=180,pad=28;
     const X=i=>pad+i*(W-2*pad)/(pts.length-1), Y=v=>H-pad-(v-min)*(H-2*pad)/(max-min);
     const line=pts.map((p,i)=>`${X(i)},${Y(p.weight_kg)}`).join(' ');
-    $('#wchart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" class="chart"><line x1="${pad}" y1="${Y(100)}" x2="${W-pad}" y2="${Y(100)}" stroke="#e05252" stroke-dasharray="5 4"/><text x="${W-pad-70}" y="${Y(100)-6}" fill="#e05252" font-size="12">目標 100kg</text><polyline points="${line}" fill="none" stroke="#3aa655" stroke-width="2.5"/>${pts.map((p,i)=>`<circle cx="${X(i)}" cy="${Y(p.weight_kg)}" r="4" fill="#3aa655"/><text x="${X(i)-14}" y="${Y(p.weight_kg)-9}" font-size="11">${p.weight_kg}</text>`).join('')}</svg>`;
+    $('#wchart').innerHTML=`<svg viewBox="0 0 ${W} ${H}" class="chart"><polyline points="${line}" fill="none" stroke="#3aa655" stroke-width="2.5"/>${pts.map((p,i)=>`<circle cx="${X(i)}" cy="${Y(p.weight_kg)}" r="4" fill="#3aa655"/><text x="${X(i)-14}" y="${Y(p.weight_kg)-9}" font-size="11">${p.weight_kg}</text>`).join('')}</svg>`;
   }
 }
 async function showDay(date){
