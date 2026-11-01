@@ -8,7 +8,7 @@ export const db = new DatabaseSync(DB_PATH);
 
 db.exec(`
 CREATE TABLE IF NOT EXISTS tenants (
-  id TEXT PRIMARY KEY, name TEXT, current_tz TEXT DEFAULT 'Asia/Tokyo', week_start INTEGER DEFAULT 1, target_kcal INTEGER DEFAULT 1860
+  id TEXT PRIMARY KEY, name TEXT, current_tz TEXT DEFAULT 'Asia/Tokyo', week_start INTEGER DEFAULT 1, target_kcal INTEGER DEFAULT NULL
 );
 INSERT OR IGNORE INTO tenants(id,name,current_tz,week_start) VALUES ('default','Darling','Asia/Tokyo',1);
 CREATE TABLE IF NOT EXISTS meals (
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS audit_logs (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id TEXT DEFAULT 'default', actor TEXT, event TEXT, key_id TEXT, detail TEXT, created_at TEXT DEFAULT (datetime('now'))
 );
 `);
-try { db.exec(`ALTER TABLE tenants ADD COLUMN target_kcal INTEGER DEFAULT 1860`); } catch {}
+try { db.exec(`ALTER TABLE tenants ADD COLUMN target_kcal INTEGER DEFAULT NULL`); } catch {}
 try { db.exec(`ALTER TABLE days ADD COLUMN emoji TEXT`); } catch {}
 try { db.exec(`ALTER TABLE meals ADD COLUMN emoji TEXT`); } catch {}
 
