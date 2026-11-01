@@ -8,7 +8,7 @@ AIseki には人間の入力UIがありません。記録はエージェント�
 
 ## 1. 接続（ローカル版）
 
-自分の環境で動いている AIメシモリ API（既定: http://localhost:8787）の `/graphql` に直接リクエストを送る。認証は不要（localhost 内の単一テナント運用）。起動方法は `prd/local-setup-for-agents.md` を参照。
+自分の環境で動いている AIメシモリ API（既定: http://localhost:8787）の `/graphql` に直接リクエストを送る。認証は不要（localhost 内の単一テナント運用）。起動方法は `prd/docs/local-setup-for-agents.md` を参照。
 
 ## 2. 記録の送り方（GraphQL）
 

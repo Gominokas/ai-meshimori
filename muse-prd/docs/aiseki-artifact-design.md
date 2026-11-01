@@ -1,4 +1,4 @@
-> 出典: 本書は `~/workspace/app-ideas/aiseki-artifact-design.md` として作成された設計書を、2026-11-01 に本リポジトリへ移載したもの。以後はこの git 版（`muse-prd/aiseki-artifact-design.md`）を正とする。移載元のファイルは当面残す。
+> 出典: 本書は `~/workspace/app-ideas/aiseki-artifact-design.md` として作成された設計書を、2026-11-01 に本リポジトリへ移載したもの。以後はこの git 版（`muse-prd/docs/aiseki-artifact-design.md`）を正とする。移載元のファイルは当面残す。
 
 # AIメシモリ アーティファクト版 ロジック設計
 

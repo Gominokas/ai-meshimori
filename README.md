@@ -23,20 +23,20 @@ main は開発統合用で、次の3部をすべて持ちます。
 
 | 文書 | 場所 | 役割 |
 |---|---|---|
-| 仕様書（aiseki-spec.md） | `shared/` | 正の仕様 |
-| 計画・決定ログ（aiseki-phase1-plan.md） | `shared/` | 決定の履歴 |
+| 仕様書（aiseki-spec.md） | `shared/docs/` | 正の仕様 |
+| 計画・決定ログ（aiseki-phase1-plan.md） | `shared/docs/` | 決定の履歴 |
 | 画面テンプレート（aiseki-mockup.html） | `shared/mockup/` | 表示の土台（単一HTML） |
-| ローカルセットアップ手順（local-setup-for-agents.md） | `prd/` | ローカル版の導入手順 |
-| アーティファクト版の設計（aiseki-artifact-design.md） | `muse-prd/` | Muse 版のロジック設計 |
-| 接続キット（connect-kit-for-agents.md） | `muse-prd/` | エージェント向けの接続・運用キット |
+| ローカルセットアップ手順（local-setup-for-agents.md） | `prd/docs/` | ローカル版の導入手順 |
+| アーティファクト版の設計（aiseki-artifact-design.md） | `muse-prd/docs/` | Muse 版のロジック設計 |
+| 接続キット（connect-kit-for-agents.md） | `muse-prd/docs/` | エージェント向けの接続・運用キット |
 
 ## あなたの Muse へ
 使う版に合わせてブランチを選んで clone してください（ローカル版は **prd**、Muse アーティファクト版は **muse-prd**。例: `git clone -b prd https://github.com/Gominokas/ai-meshimori.git`）。main ブランチは開発用です。
-- ローカル版のセットアップ: `prd/local-setup-for-agents.md` の手順（作業は `prd/` フォルダの中）。終わったら手順書の「完了後にやること」（使い方の案内と画面ボタンの提示）まで行ってください。
-- Muse 版の運用: `muse-prd/connect-kit-for-agents.md` と `muse-prd/aiseki-artifact-design.md` を参照。
+- ローカル版のセットアップ: `prd/docs/local-setup-for-agents.md` の手順（作業は `prd/` フォルダの中）。終わったら手順書の「完了後にやること」（使い方の案内と画面ボタンの提示）まで行ってください。
+- Muse 版の運用: `muse-prd/docs/connect-kit-for-agents.md` と `muse-prd/docs/aiseki-artifact-design.md` を参照。
 - 設定値（1日の標準 kcal など）は、利用者についてあなたが知っていることから決めてください。
 
-仕様: `shared/aiseki-spec.md` / 計画: `shared/aiseki-phase1-plan.md`
+仕様: `shared/docs/aiseki-spec.md` / 計画: `shared/docs/aiseki-phase1-plan.md`
 
 ## Local dev (Phase1 scaffold, 2026-10-31)
 - Runtime: Node 24 (node:sqlite for local dev DB; production target Postgres on Fly.io — DB layer is isolated in prd/apps/api/src/db.js)
