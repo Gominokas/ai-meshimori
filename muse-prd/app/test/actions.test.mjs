@@ -110,4 +110,50 @@ assert.equal(summary.actual_kcal_by_date['2026-11-04'], 1200);
 assert.equal(summary.weight_days, 1);
 ok('import/export の往復');
 
+// --- エッジケース（別ストアで実施） ---
+const s3 = createMemoryStore();
+const a3 = createActions(s3);
+
+// tz が解決できない場合はエラー（地域の実値を勝手に焼き込まない）
+assert.throws(() => a3.upsert_meal({ external_id: 'meal-20261104-asa-01', date: '2026-11-04', meal_type: '朝食', status: 'actual', menu: 'x', kcal: 1, kcal_pm: 0, report_source: '申告' }), /tz を解決できません/);
+a3.update_settings({ current_tz: 'Asia/Tokyo' });
+ok('tz 未解決はエラー');
+
+
+// 経過表記 24:41 を受理し、並びで通常時刻の後に来る
+a3.upsert_meal({ external_id: 'meal-20261104-yuu-01', date: '2026-11-04', eaten_time: '19:00', meal_type: '夕食', status: 'actual', menu: '夕食', kcal: 500, kcal_pm: 0, report_source: '申告' });
+a3.upsert_meal({ external_id: 'meal-20261104-yashoku-01', date: '2026-11-04', eaten_time: '24:41', meal_type: '夜食', status: 'actual', menu: '夜食', kcal: 300, kcal_pm: 0, report_source: '申告' });
+const times = a3.get_day('2026-11-04').sections[0].meals.map((m) => m.eaten_time);
+assert.deepEqual(times, ['19:00', '24:41']);
+ok('経過表記 24:41');
+
+// 絵文字: ZWJ 結合（家族絵文字）は書記素1つとして受理、2つは拒否
+a3.upsert_day({ external_id: 'daily-20261104-tokyo', date: '2026-11-04', emoji: '👨‍👩‍👧' });
+assert.throws(() => a3.upsert_day({ external_id: 'daily-20261104-tokyo', date: '2026-11-04', emoji: '👨‍👩‍👧🍚' }), /single emoji/);
+ok('絵文字の書記素判定');
+
+// 複数 tz の同日: get_day は節を分け、get_month は合算する
+a3.upsert_meal({ external_id: 'meal-20261104-asa-01', date: '2026-11-04', tz: 'America/Los_Angeles', eaten_time: '08:00', meal_type: '朝食', status: 'actual', menu: 'LA朝食', kcal: 600, kcal_pm: 0, report_source: '写真' });
+a3.upsert_day({ external_id: 'daily-20261104-losangeles', date: '2026-11-04', tz: 'America/Los_Angeles', weight_kg: 79.0 });
+const d3 = a3.get_day('2026-11-04');
+assert.equal(d3.sections.length, 2);
+assert.equal(d3.summary.actual_kcal, 1400);
+const m3 = a3.get_month('2026-11').days.find((d) => d.date === '2026-11-04');
+assert.equal(m3.actual_kcal, 1400);
+assert.deepEqual(m3.weights.map((w) => w.label), ['LA']);
+ok('複数 tz の同日（節分けと合算）');
+
+// 空の月: days は空配列、体重系列は全期間分が返る
+const empty = a3.get_month('2030-01');
+assert.deepEqual(empty.days, []);
+assert.equal(empty.weights.length, 1);
+ok('空の月と体重系列');
+
+// 運動フィールドの往復
+a3.upsert_day({ external_id: 'daily-20261104-tokyo', date: '2026-11-04', steps: 12345, exercise_minutes: 45, exercise_kcal: 300 });
+const rec3 = a3.export_records().days.find((d) => d.external_id === 'daily-20261104-tokyo');
+assert.equal(rec3.steps, 12345);
+assert.equal(rec3.exercise_kcal, 300);
+ok('運動フィールドの保持');
+
 console.log(`\nAll ${passed} checks passed.`);
