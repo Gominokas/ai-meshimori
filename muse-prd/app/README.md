@@ -20,13 +20,17 @@
 |---|---|
 | server/validate.js | 検証と語彙（区分・スラッグ・status、検証関数、並び替え） |
 | server/actions.js | アクション層の全11アクションと参照用メモリストア |
-| test/actions.test.mjs | 実地確認リストの自動テスト |
+| server/template-adapter.js | テンプレート流し込みアダプタ（アクション出力 → 流し込み契約変数） |
+| package.json | パッケージ定義（npm test で全テストを実行） |
+| test/actions.test.mjs | 実地確認リストの自動テスト（適合性＋エッジケース） |
+| test/volume.test.mjs | 大量データ（417日・1,266食）の import と月集計の突合 |
+| test/adapter.test.mjs | 流し込みアダプタの変換検証 |
 
 ## 手順
 
 1. アーティファクトの保存層を用意する。actions.js のストア契約は { meals: Map 相当, days: Map 相当, settings: Object } である。自環境の DB に合わせたアダプタを作り、createActions(store) に渡す。まず参照用メモリストアで挙動を掴んでから、アダプタに差し替えてよい。
 2. server/ の2ファイルを、アーティファクトのアクション実装として設置する。アクション名と引数・返り値の契約は設計書 §2 と actions.js の実装どおりとする（upsert_meal / upsert_day / delete_meal / delete_day / next_meal_external_id / get_day / get_month / get_settings / update_settings / import_records / export_records）。
-3. 画面は shared/mockup/aiseki-mockup.html のテンプレートを使い、get_month / get_day の返り値を流し込む形にする。
+3. 画面は shared/mockup/aiseki-mockup.html のテンプレートを使い、server/template-adapter.js の buildTemplateData（アクション出力 → 流し込み契約変数 DAYS / TARGET / TOT / SHORT / WEIGHTS / MEAL_EMOJI / DAY_EMOJI / selectedDate）で変換したデータを流し込む形にする。
 4. 初期設定を行う。設定は全て null で始まるため、その家の利用者へのヒアリング（チュートリアル §2）で決めた値を update_settings で入れる。current_tz が未設定のままだと、tz 省略の登録がエラーになる。
 5. 検証する（下記の完了条件）。
 

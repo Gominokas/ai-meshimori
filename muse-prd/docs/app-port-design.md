@@ -42,9 +42,15 @@ aiseki（ローカル版の実装）を Muse 版の形態へ移植し、アプ�
 | ファイル | 役割 |
 |---|---|
 | README.md | 受け手の Muse 向け構築手順（目的・前提・手順・確認・禁止事項・完了条件） |
+| package.json | パッケージ定義（npm test で全テストを実行） |
 | server/validate.js | 検証と語彙（移植元: packages/shared/validate.js） |
 | server/actions.js | アクション層（全11アクション）。保存はストアインターフェース越しで、参照用のメモリストアを含む |
-| test/actions.test.mjs | 実地確認リストの自動テスト（node で実行可能） |
+| server/template-adapter.js | テンプレート流し込みアダプタ（アクション出力 → 流し込み契約変数。変換規則はファイル冒頭に明記） |
+| test/actions.test.mjs | 実地確認リストの自動テスト＋エッジケース（node で実行可能） |
+| test/volume.test.mjs | 大量データ（417日・1,266食）の import と月集計の突合 |
+| test/adapter.test.mjs | 流し込みアダプタの変換検証 |
+
+検証の実績（2026-11-04）: 上記テストに加え、移植元 aiseki の実物（GraphQL）を別ポートで起動し、同じ記録を両側へ流す差分テストで、合計・レンジ・代表メニュー・並び順・検証エラー・tz 不一致・上書きの挙動が一致することを確認済み。
 
 ## 5. 実地確認リスト（受け手が構築後に必ず実行する）
 
