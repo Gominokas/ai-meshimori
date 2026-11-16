@@ -1,0 +1,1 @@
+{"description":"AIメシモリ Muse版の同梱アプリ（サーバ層の基準実装）","name":"ai-meshimori-app","private":true,"scripts":{"test":"node test/actions.test.mjs && node test/volume.test.mjs && node test/adapter.test.mjs"},"type":"module","version":"0.1.0"}
